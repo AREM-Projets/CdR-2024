@@ -1,4 +1,4 @@
--# Documents et ressources liés à la Coupe de France de Robotiqu
+# Documents et ressources liés à la Coupe de France de Robotiqu
 
 ## Code de l'AREM des anciennes éditions
 
