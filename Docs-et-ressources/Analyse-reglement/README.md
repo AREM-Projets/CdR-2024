@@ -9,7 +9,7 @@ L'objectif de ce dossier est d'avoir des ressources qui résument ou schématise
 Par exemple :
 - analyse fonctionnelle du robot à construire
 - [schéma des contraintes](./Contraintes%20cdr.pdf)
+- schéma des points possibles pour le robot ([version éditable](https://docs.google.com/drawings/d/1gmhsv4koyAbkvBtSPPOWJWfmH320co0LOdO_VuSkVMw/edit?usp=sharing) ou [PDF](./Points%20robot.pdf))
 - [calculatrice de score](https://cdr-score.netlify.app/#/2024), par l'équipe ARIG
 - [cahier des charges](https://docs.google.com/spreadsheets/d/1i9yqzbxxjoHJ5d2Z0rLyOdNfti14u90X9DAD5YJj5Ws/edit#gid=0)
 - etc.
-
