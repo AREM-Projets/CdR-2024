@@ -4,12 +4,12 @@ Le règlement de la CdR 2024 peut se trouver :
 - [sur le site officiel](https://www.coupederobotique.fr/edition-2024/le-concours/reglement-2024/)
 - [dans ce dossier](./Eurobot2024_Rules_CUP_FR_FINAL.pdf)
 
-L'objectif de ce dossier est d'avoir des ressources qui résument ou schématisent le règlement.
+L'objectif de ce dossier est d'avoir des ressources qui résument ou schématisent le règlement pour faciliter la conception des robots.
 
-Par exemple :
+## Liste des ressources
+
 - analyse fonctionnelle du robot à construire
-- [schéma des contraintes](./Contraintes%20cdr.pdf)
-- schéma des points possibles pour le robot ([version éditable](https://docs.google.com/drawings/d/1gmhsv4koyAbkvBtSPPOWJWfmH320co0LOdO_VuSkVMw/edit?usp=sharing) ou [PDF](./Points%20robot.pdf))
+- schéma des contraintes et objectifs pour le robot (voir [Robot](./Robot/README.md))
+- schéma des contraintes et objectifs pour les PAMIs (voir [PAMIs](./PAMIs/README.md))
 - [calculatrice de score](https://cdr-score.netlify.app/#/2024), par l'équipe ARIG
-- [cahier des charges](https://docs.google.com/spreadsheets/d/1i9yqzbxxjoHJ5d2Z0rLyOdNfti14u90X9DAD5YJj5Ws/edit#gid=0)
-- etc.
+- [cahier des charges](https://docs.google.com/spreadsheets/d/1i9yqzbxxjoHJ5d2Z0rLyOdNfti14u90X9DAD5YJj5Ws/edit#gid=0) (éditable, si vous voyez une erreur corrigez la)
