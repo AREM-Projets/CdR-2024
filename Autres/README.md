@@ -18,15 +18,18 @@ Vous aurez besoin des droits d'accès au gitlab de l'association pour consulter 
 
 ## Autres liens et logiciels utiles
 
-### Electronique et modélisation 3D
+### Electronique
 
-- [SnapEda](https://www.snapeda.com/) : pour chercher des symboles, empreintes, modèle 3D et modèle de simulation. Marche tout aussi bien avec Proteus que KiCAD 
-- [GrabCAD](https://grabcad.com/library) : pour chercher uniquement des modèles 3D de type .STEP, à utiliser si vous cherchez des modèles 3D de PCB (buck, NUCLEO...)
-- [JLCPCB](https://jlcpcb.com/) : pour commander vos PCB, une fois que vous avez un fichier .gerber
 - [KiCAD](https://www.kicad.org/download/): site où regarder la documentation de KiCAD, le lien vous amène directement sur la page de téléchargement
+- [SnapEda](https://www.snapeda.com/) : pour chercher des symboles, empreintes, modèle 3D et modèle de simulation. Marche tout aussi bien avec Proteus que KiCAD 
+
+### Modélisation 3D
+
 - [Autodesk Inventor](https://www.autodesk.com/education/edu-software/overview?sorting=featured&page=1) : logiciel pour faire de la modélisation 3D (Windows only)
-- [FreeCAD](https://www.freecad.org/downloads.php) : logiciel gratuit pour faire de la modélisation 3D 
+- [FreeCAD](https://www.freecad.org/downloads.php) : logiciel gratuit pour faire de la modélisation 3D
 - [Prusaslicer](https://www.prusa3d.com/page/prusaslicer_424/): site pour télécharger le software PrusaSlicer, vous importez un fichier 3D  et vous le transformez en .gcode pour l'imprimer
+- [GrabCAD](https://grabcad.com/library) : pour chercher uniquement des modèles 3D de type .STEP, à utiliser si vous cherchez des modèles 3D de PCB (buck, NUCLEO...)
+
 
 ### Programmation
 
