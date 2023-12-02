@@ -8,7 +8,7 @@ Pour chaque modèle, ajouter dans ce README une description(1-2 lignes), ainsi q
 
 ### [Embase-2023](./Embase-2023/)
 
-Embase du robot CdR 2023. Les problèmes de cette embase sont dans [le README associé](./Embase-2023/README.md).
+Embase du robot CdR 2023. Les améliorations possibles sont dans [le README associé](./Embase-2023/README.md).
 
 Créateur : Gauthier Pineda
 
