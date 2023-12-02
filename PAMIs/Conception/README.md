@@ -1,4 +1,4 @@
-# Analyse du règlement - PAMIs
+# Analyse du règlement et conception - PAMIs
 
 ## Contenu du dossier
 

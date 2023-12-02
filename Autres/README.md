@@ -12,3 +12,6 @@ Vous aurez besoin des droits d'accès au gitlab de l'association pour consulter 
 
 ### [Maxi-liste de ressources par la team VRAC](https://github.com/VRAC-team/la-maxi-liste-ressources-eurobot)
 
+### [Liste non exhaustive des capteurs présents au local](https://github.com/AREM-Projets/documentation-capteurs)
+
+### [Formations faites en début d'année](https://github.com/AREM-Projets/formations-CdR-2024)
