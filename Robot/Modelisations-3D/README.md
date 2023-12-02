@@ -6,14 +6,14 @@ Pour chaque modèle, ajouter dans ce README une description(1-2 lignes), ainsi q
 
 # Liste des modèles 3D
 
-### Embase-2023
+### [Embase-2023](./Embase-2023/)
 
 Embase du robot CdR 2023. Les problèmes de cette embase sont dans [le README associé](./Embase-2023/README.md).
 
 Créateur : Gauthier Pineda
 
-### Nom du modèle
+### [Embase-3-roues-Gauthier](./Embase-3-roues-Gauthier/)
 
-Description...
+Embase 3 roues créée par Gauthier pour tester les roues Holonum. Vient avec un magnifique [rapport sur la résistance des matériaux](./Embase-3-roues-Gauthier/rapport_rdm.pdf).
 
-Créateur : Quelqu'un
+Créateur : Gauthier Pineda
