@@ -6,12 +6,11 @@ Pour chaque modèle, ajouter dans ce README une description(1-2 lignes), ainsi q
 
 # Liste des modèles 3D
 
-### Exemple
+### Embase-2023
 
-Fichier exemple : coffre-fort de l'escape game de l'intégration.  
-**Supprimer quand on a autre chose pour le remplacer.**
+Embase du robot CdR 2023. Les problèmes de cette embase sont dans [le README associé](./Embase-2023/README.md).
 
-Créateur : Eliott Perret
+Créateur : Gauthier Pineda
 
 ### Nom du modèle
 
