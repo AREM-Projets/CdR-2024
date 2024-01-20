@@ -1,0 +1,8 @@
+Composant,Taille (en mm),Contrainte
+Batterie,190 x 100 x 19,
+Moteurs (x2),42 x 42 x 20,Roues
+Nucleo L432KC,50 x 18 x ?,
+Drivers A4988 (x2),15 x 20 x ?,
+BAU,40 x 37 x 73,Visible du dessus du robot
+Roues,?,"Sur le côté, contact au sol"
+Buck boost,?,
