@@ -18,6 +18,8 @@ Pour toute question aller sur [le salon PAMI du discord](https://discord.gg/RnYk
 
 ## Liste des composants
 
+La taille de la plupart de ces composants peut être trouvée dans [ce document](./composants.csv).
+
 - carte Nucleo L432KC
 - Batterie externe de téléphone (5V, 22.5W)
 - 2 $\times$ Moteurs pas à pas NEMA-17 20mm d'épaisseur (13 N.cm)
