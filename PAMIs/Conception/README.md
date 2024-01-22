@@ -1,22 +1,14 @@
 # Analyse du règlement et conception - PAMIs
 
-## Contenu du dossier
+## Documents de conception
 
-- [liste des contraintes](./Contraintes%20PAMIs.pdf) ([version éditable](https://docs.google.com/drawings/d/1aNA5bNJc2DdUMf7WPIdK8QOshezXf-j2Hv97i4UfBy4/edit?usp=sharing))
-- liste des points possibles (pas fini)
-- [spreadsheet des idées](https://docs.google.com/spreadsheets/d/1GuigQY19NkE2jPr05z4DLiZ8AFi4P-pAyoT_fMEKkbg/edit?usp=sharing) (inutile maintenant) 
+### [Pinout de la carte principale](https://docs.google.com/spreadsheets/d/1nnAxQa-xgVzteT0e-WYy9qsg8co_bPJd0W1cznvzzPQ/edit?usp=sharing)
 
-## Liens utiles 
-
-- [librairie Arduino StepperDriver](https://github.com/laurb9/StepperDriver/) (compatible avec le A4988)
-
-Pour toute question aller sur [le salon PAMI du discord](https://discord.gg/RnYkBRJE7z).
-
-## Schéma électronique
+### Schéma électronique
 
 ![schéma électronique](./schema_elec_PAMI.png)
 
-## Liste des composants
+### Liste des composants
 
 La taille de la plupart de ces composants peut être trouvée dans [ce document](./composants.csv).
 
@@ -29,3 +21,15 @@ La taille de la plupart de ces composants peut être trouvée dans [ce document]
 - Bouton d'arrêt d'urgence
 - Tirette 
 - Sélecteur d'équipe (interrupteur)
+
+## Liens utiles 
+
+- [librairie Arduino StepperDriver](https://github.com/laurb9/StepperDriver/) (compatible avec le A4988)
+
+Pour toute question aller sur [le salon PAMI du discord](https://discord.gg/RnYkBRJE7z).
+
+## Documents archivés 
+
+- [liste des contraintes](./Contraintes%20PAMIs.pdf) ([version éditable](https://docs.google.com/drawings/d/1aNA5bNJc2DdUMf7WPIdK8QOshezXf-j2Hv97i4UfBy4/edit?usp=sharing))
+- liste des points possibles (pas fini)
+- [spreadsheet des idées](https://docs.google.com/spreadsheets/d/1GuigQY19NkE2jPr05z4DLiZ8AFi4P-pAyoT_fMEKkbg/edit?usp=sharing) (inutile maintenant)
