@@ -3,7 +3,7 @@ Repo contenant l'ensemble des documents liés à la Coupe de France de Robotique
 
 ## Organisation du repo
 
-Les ressources qui ne sont pas directement liées au robot, ainsi que des liens vers des ressources extérieures se trouvent dans le dossier `Docs-et-ressources`.
+Le dossier [Generalites](./Generalites) contient l'analyse du règlement ainsi que des ressources diverses. 
 
 Le code, les PCBs et les modélisations 3D sont dans les dossiers PAMIs et Robot, selon leur utilisation.
 
