@@ -2,7 +2,11 @@
 
 ## Documents de conception
 
-### [Pinout de la carte principale](https://docs.google.com/spreadsheets/d/1nnAxQa-xgVzteT0e-WYy9qsg8co_bPJd0W1cznvzzPQ/edit?usp=sharing)
+### Carte principale
+
+La carte utilisée est une Nucleo L432KC. 
+- [pinout de la carte](https://os.mbed.com/platforms/ST-Nucleo-L432KC/) (site MBED)
+- [utilisation des pins pour les PAMIs](https://docs.google.com/spreadsheets/d/1nnAxQa-xgVzteT0e-WYy9qsg8co_bPJd0W1cznvzzPQ/edit?usp=sharing) (éditable) 
 
 ### Schéma électronique
 
