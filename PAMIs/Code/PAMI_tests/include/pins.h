@@ -5,24 +5,31 @@
 
 /* ---UART2 : Serial--- */
 
-#define PIN_SERIAL_RX A2 // output
-#define PIN_SERIAL_TX A7 // output
+#define USART_RX A2 // output
+#define USART_TX A7 // output
+
+/* ---I2C--- */
+
+#define I2C_SDA D4 // SDA  
+#define I2C_SCL D5 // SCL 
+
+/* ---SPI--- */
+
+#define SPI_MOSI D2 
+#define SPI_MISO D10
+#define SPI_SCLK A1
+#define SPI_SSEL D3
 
 /* ---Stepper driver A4988--- */
 
-#define MOTORS_SLEEP D6 // output
-#define DIR_MOTOR_G D2  // output
-#define DIR_MOTOR_D D4  // output
+#define DIR_MOTOR_G A3  // output
+#define DIR_MOTOR_D A4  // output
 
-#define STEP_MOTOR_G D3 // output PWM
-#define STEP_MOTOR_D D5 // output PWM
-
-/* ---Capteurs--- */
-
-#define SDA_TOF D0 // SDA (I2C) 
-#define SCL_TOF D1 // SCL (I2C)
+#define STEP_MOTOR_G D0 // output PWM
+#define STEP_MOTOR_D D1 // output PWM
 
 /* ---Autres--- */
 
 #define TIRETTE D11 // input Pullup
 #define TEAM_SELECT D12 // input Pullup
+#define SLEEP A0 // output

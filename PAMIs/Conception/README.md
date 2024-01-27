@@ -29,6 +29,7 @@ La taille de la plupart de ces composants peut être trouvée dans [ce document]
 ## Liens utiles 
 
 - [librairie Arduino StepperDriver](https://github.com/laurb9/StepperDriver/) (compatible avec le A4988)
+- [librairie Arduino lecteur RFID - I2C](https://github.com/semaf/MFRC522_I2C_Library)
 
 Pour toute question aller sur [le salon PAMI du discord](https://discord.gg/RnYkBRJE7z).
 
