@@ -1,7 +1,6 @@
 // -----Includes-----
 #include <Arduino.h>
 
-
 #include "pins.h"
 #include "BasicStepperDriver.h"
 
@@ -19,7 +18,7 @@ volatile bool match_ongoing = false;
 
 /* Motors */
 BasicStepperDriver Motor_G(200, DIR_MOTOR_G, STEP_MOTOR_G, SLEEP);
-BasicStepperDriver Motor_D(200, DIR_MOTOR_D, STEP_MOTOR_D, SLEEP);
+BasicStepperDriver MoCator_D(200, DIR_MOTOR_D, STEP_MOTOR_D, SLEEP);
 
 // -----Main-----
 void setup() 
@@ -30,7 +29,6 @@ void setup()
     Serial.begin(9600);
 
     /* Init Motors */
-    
 
     /* Init Timer7 */
     MyTim->setOverflow(1, HERTZ_FORMAT);
