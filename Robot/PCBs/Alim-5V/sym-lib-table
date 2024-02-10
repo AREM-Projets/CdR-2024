@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "lib_supply_power_5V")(type "KiCad")(uri "${KIPRJMOD}/Composants/lib_supply_power_5V.kicad_sym")(options "")(descr ""))
+)
