@@ -17,3 +17,9 @@ Créateur : Gauthier Pineda
 Embase 3 roues créée par Gauthier pour tester les roues Holonum. Vient avec un magnifique [rapport sur la résistance des matériaux](./Embase-3-roues-Gauthier/rapport_rdm.pdf).
 
 Créateur : Gauthier Pineda
+
+### [Support-batterie](./Support-batterie/)  
+
+Support pour les batteries. Il sera fixé par des vis. Agrémenté d'un exceptionnel [README](./Support-batterie/README.pdf).
+
+Créatrice : Pauline Béranger
