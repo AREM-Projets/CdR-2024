@@ -6,14 +6,14 @@ Dans ce README, une description rapide (1-2 lignes) de son utilité doit être p
 
 # Liste des PCBs
 
-### Nom du PCB
+### PCB n°1: ALIM 5V
 
-Ca sert à quoi ???
+Le PCB prend en entrée une tension 24V DC et la convertie en une tension 5V DC. On a 3A par buck et 4 ports de sortie JST-XH, soit 6A max au total pour 8 ports de sortie. La tension de sortie des bucks est réglable grâce au potentiomètre. Ce PCB peut donc être utilisé pour d'autres tension d'entrées et de sorties. De même, on peut récupérer directement le 24V   
 
-Desiger : Quelqu'un, quelqu'un d'autre...
+Desiger : Cyril, Eliott
 
-### Nom du PCB n°2
+### PCB n°2: carte de mise en série
 
-Et lui il sert à quoi ???
+Permet de mettre en série deux batteries 12V.
 
-Designer : Lui
+Designer : Eliott
