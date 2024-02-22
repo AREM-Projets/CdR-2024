@@ -5,3 +5,10 @@
 **/.vscode/launch.json
 **/.vscode/ipch
 **/Composants_private/
+
+# Eclipse/CubeIDE
+.metadata
+.settings
+[Rr]elease
+[Dd]ebug
+.launch
