@@ -8,7 +8,7 @@ Dans ce README, une description rapide (1-2 lignes) de son utilité doit être p
 
 ### PCB n°1: ALIM 5V
 
-Le PCB prend en entrée une tension 24V DC et la convertie en une tension 5V DC. On a 3A par buck et 4 ports de sortie JST-XH, soit 6A max au total pour 8 ports de sortie. La tension de sortie des bucks est réglable grâce au potentiomètre. Ce PCB peut donc être utilisé pour d'autres tension d'entrées et de sorties. De même, on peut récupérer directement le 24V   
+Le PCB prend en entrée une tension 24V DC et la convertie en une tension 5V DC. On a 3A par buck et 4 ports de sortie JST-XH, soit 6A max au total pour 8 ports de sortie. La tension de sortie des bucks est réglable grâce au potentiomètre. Ce PCB peut donc être utilisé pour d'autres tension d'entrées et de sorties. De même, on peut récupérer directement le 24V pour les moteurs grâce à un port XT-60.  
 
 Desiger : Cyril, Eliott
 
