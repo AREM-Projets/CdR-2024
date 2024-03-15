@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"name": "RASPI_STM32_ControleLed",
+			"path": "../../../../../../../Users/chass/OneDrive/Documents/PlatformIO/Projects/RASPI_STM32_ControleLed"
+		}
+	],
+	"settings": {}
+}

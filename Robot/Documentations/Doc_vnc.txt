@@ -1,0 +1,14 @@
+Commandes éxécutées sur la raspi:
+
+sudo apt update
+sudo apt install tigervnc-standalone-server tigervnc-common
+
+vncserver
+
+
+Mot de passe choisi: cdrcdr
+
+
+Commandes exécutées sur le pc avdc wsl:
+sudo apt install tigervnc-viewer
+
