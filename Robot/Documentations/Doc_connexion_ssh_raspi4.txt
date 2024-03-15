@@ -1,0 +1,11 @@
+ouvrir powershell
+taper ssh -X cdr@ubuntu ou ssh -X cdr@192.168.1.100
+
+
+Temps de boot: 2'30
+ip: 192.168.1.100
+
+
+
+Pour eventuellement voir le bureau a distance
+https://www.realvnc.com/en/connect/download/vnc/

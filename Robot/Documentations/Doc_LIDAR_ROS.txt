@@ -1,0 +1,27 @@
+Bibliothèque utilisée pour le LIDAR :
+https://github.com/Slamtec/sllidar_ros2
+
+J'ai simplement suivi les instructions d'installation du repo git.
+Note: lors de la compilation avec colcon il y à une erreur mais c'est normal et pas grave.
+
+
+Commandes (installer et exécuter le code qui permet de visualiser sur rviz2 le scan du LIDAR):
+
+git clone https://github.com/Slamtec/sllidar_ros2.git
+source /opt/ros/humble/setup.bash
+colcon build --symlink-install
+source ./install/setup.bash
+sudo chmod 777 /dev/ttyUSB0          <- attention il faut donner à ROS l'accès au port USB du LIDAR (ttyUSB0 sur Ubuntu par défaut. Attention quand il y aura d'autres périphériques !)
+ros2 launch sllidar_ros2 view_sllidar_a1_launch.py     <-- lance rviz2 pour visualiser le scan
+
+
+
+
+rviz2 permet de visualiser les données publiées sur des topics par divers noeuds
+
+
+
+Pour lancer le LIDAR directement après ouverture du terminal:
+(source /opt/ros/humble/setup.bash) plus utile-> ajouté au source path
+
+ros2 launch sllidar_ros2 view_sllidar_a1_launch.py
