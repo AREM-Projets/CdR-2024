@@ -1,0 +1,35 @@
+
+OS installé: Ubuntu 22.04.3 preinstalled server arm64+raspi
+
+WorkSpace global pour le code du robot CDR: /home/cdr/dev_ws
+
+Pour ajouter un package:
+-   se placer dans dev_ws/src
+-   cloner le dépot git souhaité avec la commande:
+    git clone https://github.com/monRepo
+
+
+Pour visualiser le flow dans un topic:
+ros2 topic echo <monTopic>
+
+
+
+
+Pour accéder à un port série pour par exemple lire les valeurs retournées par une stm32 branchée en usb:
+pyserial-miniterm
+
+
+
+
+Compiler avec la commande:
+colcon build --symlink-install
+
+
+
+
+
+
+
+
+Piste pour avoir un visuel du bureau de la raspi en ssh:
+https://raspberry-lab.fr/Debuter-sur-Raspberry-Francais/Connexion-Bureau-a-distance-Raspberry-Francais/

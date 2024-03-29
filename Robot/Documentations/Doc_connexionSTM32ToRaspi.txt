@@ -1,0 +1,6 @@
+voir ici pour les conflits de ports usb:
+https://www.freva.com/fr/attribuer-des-noms-de-port-usb-fixes-a-votre-raspberry-pi/
+
+
+
+nom port usb: ttyACM0

@@ -1,0 +1,15 @@
+Vidéos utiles:
+->créer un package et le faire fonctionner + fin tuto utiliser git pour un projet ROS
+https://www.youtube.com/watch?v=Y_SyQXTL2XU&list=PLunhqkrRNRhYYCaSTVP-qJnyUPkTxJnBt&index=5
+
+
+->Ajouter un LIDAR
+https://www.youtube.com/watch?v=eJZXRncGaGM
+
+
+->Code de contrôle de moteurs sur arduino nano:
+github.com/joshnewans/ros_arduino_bridge
+->Code ROS pour envoyer des messages à la carte arduino:
+https://github.com/joshnewans/serial_motor_demo.git
+avec la vidéo:
+https://www.youtube.com/watch?v=-PCuDnpgiew&list=PLunhqkrRNRhYAffV8JDiFOatQXuU-NnxT&index=7
