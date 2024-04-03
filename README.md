@@ -14,3 +14,5 @@ La documentation associée à chaque partie du projet doit se trouver dans le RE
 N'hésitez pas à ajouter vos tests divers sur ce repo.
 
 Si vous pensez avoir cassé quelque chose, contactez le respo informatique.
+
+## Dates de la CDR : 7 au 11 mai 2024
