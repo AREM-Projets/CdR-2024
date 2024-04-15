@@ -1,4 +1,5 @@
 #include "fonctions.hpp"
+#include "main.hpp"
 
 /* - - - Header - - - */
 
