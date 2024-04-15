@@ -1,12 +1,9 @@
-/* - - - Bibliothèques - - - */
+#include "main.hpp"
+
 
 
 #ifndef FONCTION 
 #define FONCTION
-
-/* - - - Define - - - */
-
-/* - - - Structures - - - */
 
 /* - - - Prototypes - - - */
 
