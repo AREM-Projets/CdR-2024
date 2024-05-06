@@ -23,7 +23,7 @@ from tkinter import *
 
 
 PIN_TIRETTE = 16
-PIN_SELECTEUR_EQUIPE = 23
+PIN_SELECTEUR_EQUIPE = 15 #23
 
 
 
