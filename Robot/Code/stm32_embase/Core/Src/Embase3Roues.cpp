@@ -35,14 +35,27 @@ void Embase3Roues::init() {
 int32_t Embase3Roues::appendRelativeMove(double x, double y, double theta) {
 	Task_t task;
 	initTask(task);
+	int32_t res;
 
+	double distance = sqrt(x*x + y*y); // Total distance to travel (in increments of BASE_MOVEMENT_DIST_M)
 	task.type = MOVE_RELATIVE;
 
-	task.x = x;
-	task.y = y;
+	// Rotation at the beginning
 	task.theta = theta;
+	res = appendInstruction(task);
 
-	int32_t res = appendInstruction(task);
+	// Translation
+	task.theta = 0;
+	task.y = BASE_MOVEMENT_DIST_M;
+
+	while(distance > BASE_MOVEMENT_DIST_M)
+	{
+		res = appendInstruction(task);
+		distance -= BASE_MOVEMENT_DIST_M;
+	}
+
+	task.y = distance;
+	res = appendInstruction(task);
 	return res;
 }
 
@@ -65,6 +78,60 @@ int32_t Embase3Roues::appendWait(uint32_t delay_ms) {
 }
 
 /**
+ * @brief Insert a movement task as the next task
+ *
+ * @param x
+ * @param y
+ * @param theta
+ * @return int32_t : the index of the added task, or -1 in case of failure (queue full)
+ */
+int32_t Embase3Roues::insertRelativeMove(double x, double y, double theta) {
+	Task_t task;
+	initTask(task);
+	int32_t res;
+
+	double distance = sqrt(x*x + y*y); // Total distance to travel (in increments of BASE_MOVEMENT_DIST_M)
+	task.type = MOVE_RELATIVE;
+
+	// Rotation at the beginning
+	task.theta = theta;
+	res = insertInstruction(task);
+
+	// Translation
+	task.theta = 0;
+	task.y = BASE_MOVEMENT_DIST_M;
+
+	while(distance > BASE_MOVEMENT_DIST_M)
+	{
+		res = insertInstruction(task);
+		distance -= BASE_MOVEMENT_DIST_M;
+	}
+
+	task.y = distance;
+	res = insertInstruction(task);
+	return res;
+}
+
+/**
+ * @brief Insert a wait task as the next task
+ *
+ * @param delay_ms
+ * @return int32_t : the index of the added task, or -1 in case of failure (queue full)
+ */
+int32_t Embase3Roues::insertWait(uint32_t delay_ms) {
+	Task_t task;
+	initTask(task);
+
+	task.type = WAIT;
+
+	task.delay_ms = delay_ms;
+
+	int32_t res = insertInstruction(task);
+	return res;
+}
+
+
+/**
  * @brief Execute an instruction from the queue
  * 
  * @return int32_t : the index of the executed instruction
@@ -72,6 +139,15 @@ int32_t Embase3Roues::appendWait(uint32_t delay_ms) {
 TaskType_t Embase3Roues::executeInstruction() {
 	Task_t current_task = _task_buffer[_current_index];
 	TaskType_t type = current_task.type;
+
+	// "delete" current task
+	initTask(_task_buffer[_current_index]);
+
+	// Only go forward in the buffer if the task was not NONE.
+	if (type != NONE)
+	{
+		_current_index++;
+	}
 
 	switch (type) {
 	case NONE:
@@ -88,15 +164,6 @@ TaskType_t Embase3Roues::executeInstruction() {
 
 	default:
 		break;
-	}
-
-	// "delete" current task
-	initTask(_task_buffer[_current_index]);
-
-	// Only go forward in the buffer if the task was not NONE.
-	if (type != NONE)
-	{
-		_current_index++;
 	}
 
 	return type;
@@ -124,6 +191,15 @@ TaskType_t Embase3Roues::getCurrentType()
  * Private functions
  ******************************/
 
+void copyTask(Task_t &dest, Task_t &src)
+{
+	dest.type = src.type;
+	dest.x = src.x;
+	dest.y = src.y;
+	dest.theta = src.theta;
+	dest.delay_ms = src.delay_ms;
+}
+
 void initTask(Task_t &task)
 {
 	task.type = TaskType_t::NONE;
@@ -144,15 +220,34 @@ int32_t Embase3Roues::appendInstruction(Task_t task) {
 		return _last_index;
 	}
 
-	_task_buffer[_last_index].type = task.type;
-	_task_buffer[_last_index].x = task.x;
-	_task_buffer[_last_index].y = task.y;
-	_task_buffer[_last_index].theta = task.theta;
-	_task_buffer[_last_index].delay_ms = task.delay_ms;
+	copyTask(_task_buffer[_last_index], task);
 
 	_last_index = (_last_index + 1) % MAX_TASK_COUNT;
 
 	return _last_index;
+}
+
+int32_t Embase3Roues::insertInstruction(Task_t task)
+{
+
+	if(task.type == NONE)
+	{
+		// Nothing happened
+		return _current_index;
+	}
+
+	int32_t i = (_current_index + 1) % MAX_TASK_COUNT;
+	while(i != _current_index)
+	{
+		copyTask(_task_buffer[i], _task_buffer[(i - 1) % MAX_TASK_COUNT]);
+
+	}
+
+	copyTask(_task_buffer[_current_index], task);
+	_last_index = (_last_index + 1) % MAX_TASK_COUNT;
+
+
+	return _current_index;
 }
 
 void Embase3Roues::setStep(double x, double y, double theta) {
@@ -188,12 +283,13 @@ void Embase3Roues::setStep(double x, double y, double theta) {
 		dir_c = BWD;
 	}
 
-	motors_busy = true;
-	commande_step_indiv(step_a, dir_a, step_b, dir_b, step_c, dir_c, 0, FWD);
+
 
 
 	if (step_a || step_b || step_c)
 	{
+		motors_busy = true;
+		commande_step_indiv(step_a, dir_a, step_b, dir_b, step_c, dir_c, 0, FWD);
 		while(motors_busy); // Wait for motors to be off.
 	}
 
@@ -244,13 +340,16 @@ void Embase3Roues::translate(double x, double y) {
 
 	// Execution des mouvements
 	rotate(theta);
-	HAL_Delay(BASE_MOTOR_DELAY_MS);
+	if(theta)
+		HAL_Delay(BASE_MOTOR_DELAY_MS);
 
+	while(!movement_allowed);
 	setStep(0, distance, 0);
 	HAL_Delay(BASE_MOTOR_DELAY_MS);
 
 	rotate(-theta);
-	HAL_Delay(BASE_MOTOR_DELAY_MS);
+	if(theta)
+		HAL_Delay(BASE_MOTOR_DELAY_MS);
 
 }
 
@@ -267,6 +366,10 @@ void Embase3Roues::moveRelative(double x, double y, double theta) {
 
 void Embase3Roues::wait(uint32_t delay_ms) {
 	motors_stop_hard();
+	if (delay_ms == 0)
+	{
+		while(!movement_allowed);
+	}
 	HAL_Delay(delay_ms);
 }
 

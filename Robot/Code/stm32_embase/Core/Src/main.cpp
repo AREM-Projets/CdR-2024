@@ -24,8 +24,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-# include "msg_handler.hpp"
-# include "XNucleoIHM02A1.h"
+#include "XNucleoIHM02A1.h"
 #include "BlocMoteurs.hpp"
 #include "Embase3Roues.hpp"
 #include <math.h>
@@ -61,21 +60,6 @@ UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 /* USER CODE BEGIN PV */
 
-//Msg handler is built over huart2 (usb) and will handle UART communication
-// with the stm32_to_ros_node
-MsgHandler msg_handler(&huart2);
-
-//counter increased each Timer2 interrupt (currently 20ms)
-int timer_timeout_count = 0;
-
-//Tab of motor_speeds received from msg_handler
-float input_motor_speeds[4] { 0.0, 0.0, 0.0, 0.0 }; //Vx, Vy, Wz speeds
-
-/*
- volatile float Vx = 0, Vy = 0, Wz = 0; //En m/s m/s rad/s  //Utile ?
- volatile float Cmde_X = 0, Cmde_Y = 0, Cmde_Z = 0; //en m, en m, en ° //Utile ?
- */
-
 //Flag to control a timeout state
 //Timeout occurs if no data was received from serial in a long time
 bool timeout_moteurs = false;
@@ -85,6 +69,9 @@ BlocMoteurs *moteurs;
 Embase3Roues *embase;
 
 volatile bool motors_busy;
+volatile bool movement_allowed;
+
+uint8_t uart_received_char;
 
 /* USER CODE END PV */
 
@@ -126,7 +113,6 @@ void Exe_Instruction(BlocMoteurs *moteur_local);
  */
 int main(void) {
 	/* USER CODE BEGIN 1 */
-	TaskType_t task_type;
 	/* USER CODE END 1 */
 
 	/* MCU Configuration--------------------------------------------------------*/
@@ -160,6 +146,7 @@ int main(void) {
 	//Start Timer2 interrupt (every 20 ms here)
 	HAL_TIM_Base_Start_IT(&htim2);
 
+	HAL_UART_Receive_IT(&huart2, &uart_received_char, sizeof(uint8_t));
 
 	//Init motor class
 	/* moteurs = new BlocMoteurs(&hspi1, reset_shield_1_GPIO_Port,
@@ -184,17 +171,19 @@ int main(void) {
 	embase->init();
 
 	embase->appendWait(1000);
-	embase->appendRelativeMove(0, 1, 0);
+	embase->appendRelativeMove(1, 1, 0);
 	embase->appendWait(1000);
-	embase->appendRelativeMove(0, -1, 0);
-	embase->appendWait(10000);
+	embase->appendRelativeMove(-1, -1, 0);
+	// embase->appendWait(10000);
+
+	movement_allowed = false;
 
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 	while (1) {
-		task_type = embase->executeInstruction();
+		embase->executeInstruction();
 
 		/* USER CODE END WHILE */
 
@@ -690,32 +679,35 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 
 //Redirect Uart callback to msg_handler if huart is huart2 peripheral
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
-	if (huart == &huart2) {
-		msg_handler.process_txclpt_callback();
-	}
 
 }
 
 //Redirect Uart callback to msg_handler if huart is huart2 peripheral
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-	if (huart == &huart2) {
-		msg_handler.process_rxclpt_callback();
-	}
+	if(huart->Instance == USART2)
+	{
+		switch(uart_received_char)
+		{
+		case 's':
+			movement_allowed = true;
+			break;
 
+		case 'w':
+			movement_allowed = false;
+			break;
+
+		default:
+			break;
+		}
+
+		// ALWAYS READ UART
+		HAL_UART_Receive_IT(&huart2, &uart_received_char, sizeof(uint8_t));
+	}
 }
 
 //Timer 2 interrupt (every 20ms)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-	// Check which version of the timer triggered this callback and toggle LED
-	if (htim == &htim2) {
 
-		timer_timeout_count++;
-		if (timer_timeout_count > 10) //in case of a timeout, reset flags that may lock the logic of the msg_handler
-				{
-			msg_handler.unlock_timeout();
-		}
-
-	}
 }
 
 /* USER CODE END 4 */

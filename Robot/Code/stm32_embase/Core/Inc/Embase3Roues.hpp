@@ -14,6 +14,7 @@
 #include "config.hpp"
 
 extern volatile bool motors_busy;
+extern volatile bool movement_allowed;
 
 enum TaskType_t
 {
@@ -44,6 +45,9 @@ public:
 	int32_t appendRelativeMove(double x, double y, double theta);
 	int32_t appendWait(uint32_t delay_ms);
 
+	int32_t insertRelativeMove(double x, double y, double theta);
+	int32_t insertWait(uint32_t delay_ms);
+
 	TaskType_t executeInstruction();
 
 	int32_t getCurrentIndex();
@@ -56,6 +60,7 @@ private:
 	int32_t _current_index = 0;
 
 	int32_t appendInstruction(Task_t task);
+	int32_t insertInstruction(Task_t task);
 
 	// Movement related, used by moveRelative()
 	void setStep(double x, double y, double theta);
@@ -67,6 +72,7 @@ private:
 	void wait(uint32_t delay_ms);
 };
 
+void copyTask(Task_t &dest, Task_t &src);
 void initTask(Task_t &task);
 
 #endif /* INC_EMBASE3ROUES_HPP_ */

@@ -5,8 +5,10 @@
 
 #define DEG_PER_FULL_STEP 1.8
 
+#define BASE_MOVEMENT_DIST_M 0.05
+
 // Nombre max de tâches stockées (buffer circulaire)
-#define MAX_TASK_COUNT 100
+#define MAX_TASK_COUNT 300
 
 #define BASE_MOTOR_DELAY_MS 100
 
