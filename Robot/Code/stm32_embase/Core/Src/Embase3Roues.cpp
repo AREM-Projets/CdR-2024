@@ -35,27 +35,14 @@ void Embase3Roues::init() {
 int32_t Embase3Roues::appendRelativeMove(double x, double y, double theta) {
 	Task_t task;
 	initTask(task);
-	int32_t res;
 
-	double distance = sqrt(x*x + y*y); // Total distance to travel (in increments of BASE_MOVEMENT_DIST_M)
 	task.type = MOVE_RELATIVE;
 
-	// Rotation at the beginning
+	task.x = x;
+	task.y = y;
 	task.theta = theta;
-	res = appendInstruction(task);
 
-	// Translation
-	task.theta = 0;
-	task.y = BASE_MOVEMENT_DIST_M;
-
-	while(distance > BASE_MOVEMENT_DIST_M)
-	{
-		res = appendInstruction(task);
-		distance -= BASE_MOVEMENT_DIST_M;
-	}
-
-	task.y = distance;
-	res = appendInstruction(task);
+	int32_t res = appendInstruction(task);
 	return res;
 }
 
@@ -88,27 +75,14 @@ int32_t Embase3Roues::appendWait(uint32_t delay_ms) {
 int32_t Embase3Roues::insertRelativeMove(double x, double y, double theta) {
 	Task_t task;
 	initTask(task);
-	int32_t res;
 
-	double distance = sqrt(x*x + y*y); // Total distance to travel (in increments of BASE_MOVEMENT_DIST_M)
 	task.type = MOVE_RELATIVE;
 
-	// Rotation at the beginning
+	task.x = x;
+	task.y = y;
 	task.theta = theta;
-	res = insertInstruction(task);
 
-	// Translation
-	task.theta = 0;
-	task.y = BASE_MOVEMENT_DIST_M;
-
-	while(distance > BASE_MOVEMENT_DIST_M)
-	{
-		res = insertInstruction(task);
-		distance -= BASE_MOVEMENT_DIST_M;
-	}
-
-	task.y = distance;
-	res = insertInstruction(task);
+	int32_t res = insertInstruction(task);
 	return res;
 }
 
@@ -283,9 +257,6 @@ void Embase3Roues::setStep(double x, double y, double theta) {
 		dir_c = BWD;
 	}
 
-
-
-
 	if (step_a || step_b || step_c)
 	{
 		motors_busy = true;
@@ -339,18 +310,19 @@ void Embase3Roues::translate(double x, double y) {
 	}
 
 	// Execution des mouvements
-	rotate(theta);
-	if(theta)
-		HAL_Delay(BASE_MOTOR_DELAY_MS);
+	rotate(theta); // Rotation initiale
+
+	while(distance > BASE_MOVEMENT_DIST_M)
+	{
+		while(!movement_allowed);
+		setStep(0, BASE_MOVEMENT_DIST_M, 0); // Découpage des mouvements
+		distance -= BASE_MOVEMENT_DIST_M;
+	}
 
 	while(!movement_allowed);
-	setStep(0, distance, 0);
-	HAL_Delay(BASE_MOTOR_DELAY_MS);
+	setStep(0, distance, 0); // Mouvement final
 
 	rotate(-theta);
-	if(theta)
-		HAL_Delay(BASE_MOTOR_DELAY_MS);
-
 }
 
 void Embase3Roues::rotate(double theta) {
@@ -366,10 +338,6 @@ void Embase3Roues::moveRelative(double x, double y, double theta) {
 
 void Embase3Roues::wait(uint32_t delay_ms) {
 	motors_stop_hard();
-	if (delay_ms == 0)
-	{
-		while(!movement_allowed);
-	}
 	HAL_Delay(delay_ms);
 }
 

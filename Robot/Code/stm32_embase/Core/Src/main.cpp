@@ -174,10 +174,11 @@ int main(void) {
 	embase->appendRelativeMove(1, 1, 0);
 	embase->appendWait(1000);
 	embase->appendRelativeMove(-1, -1, 0);
-	// embase->appendWait(10000);
+	embase->appendWait(10000);
 
-	movement_allowed = false;
+	movement_allowed = false; // Wait for "s" to start
 
+	HAL_UART_Transmit(&huart2, (uint8_t *) "Init OK\n", 8*sizeof(char), 1000);
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
