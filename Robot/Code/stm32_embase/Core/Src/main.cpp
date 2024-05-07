@@ -70,6 +70,7 @@ Embase3Roues *embase;
 
 volatile bool motors_busy;
 volatile bool movement_allowed;
+volatile bool init_requested = false;
 
 uint8_t uart_received_char;
 
@@ -88,17 +89,7 @@ static void MX_TIM8_Init(void);
 static void MX_USART3_UART_Init(void);
 
 /* USER CODE BEGIN PFP */
-void send_print(const char *msg);
-void send_float(float float_to_send);
-void Set_Speeds(float V_x, float V_y, float W_z);
-void Set_Step(float X, float Y, float theta_z);
-void Set_Position(float X, float Y, float theta_z);
-void Set_Rotation(float theta_z);
-void Set_Distance(float X, float Y);
-void Init_Intruction(void);
-void Add_Instruction(float new_X, float new_Y, float new_Z);
-void Maj_Pointeur_Instruction(BlocMoteurs *moteur_local);
-void Exe_Instruction(BlocMoteurs *moteur_local);
+void setDefaultInstructions(Embase3Roues *e);
 
 /* USER CODE END PFP */
 
@@ -168,14 +159,7 @@ int main(void) {
 	//Set max acc to 1 rad/s^2
 	//moteurs->set_max_acc_moteurs(1);
 
-	embase->init();
-
-	embase->appendWait(1000);
-	embase->appendRelativeMove(1, 1, 0);
-	embase->appendWait(1000);
-	embase->appendRelativeMove(-1, -1, 0);
-	embase->appendWait(10000);
-
+	setDefaultInstructions(embase);
 	movement_allowed = false; // Wait for "s" to start
 
 	HAL_UART_Transmit(&huart2, (uint8_t *) "Init OK\n", 8*sizeof(char), 1000);
@@ -185,6 +169,13 @@ int main(void) {
 	/* USER CODE BEGIN WHILE */
 	while (1) {
 		embase->executeInstruction();
+
+		if (init_requested)
+		{
+			init_requested = false;
+			setDefaultInstructions(embase);
+			movement_allowed = false;
+		}
 
 		/* USER CODE END WHILE */
 
@@ -670,6 +661,18 @@ static void MX_GPIO_Init(void) {
 
 /* USER CODE BEGIN 4 */
 
+// Init instructions
+void setDefaultInstructions(Embase3Roues *e)
+{
+	e->init();
+
+	e->appendWait(1000);
+	e->appendRelativeMove(1, 1, 0);
+	e->appendWait(1000);
+	e->appendRelativeMove(-1, -1, 0);
+	e->appendWait(10000);
+}
+
 // GPIO interrupt
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if (GPIO_Pin == GPIO_PIN_0) {
@@ -696,6 +699,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 		case 'w':
 			movement_allowed = false;
 			break;
+
+		case 'i':
+			init_requested = true;
 
 		default:
 			break;
