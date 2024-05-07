@@ -168,14 +168,15 @@ int main(void) {
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 	while (1) {
-		embase->executeInstruction();
-
+		// Pas touche
 		if (init_requested)
 		{
 			init_requested = false;
 			setDefaultInstructions(embase);
 			movement_allowed = false;
 		}
+
+		embase->executeInstruction();
 
 		/* USER CODE END WHILE */
 
@@ -666,6 +667,7 @@ void setDefaultInstructions(Embase3Roues *e)
 {
 	e->init();
 
+	// Modifier les lignes suivantes pour changer les déplacements...
 	e->appendWait(1000);
 	e->appendRelativeMove(1, 1, 0);
 	e->appendWait(1000);
