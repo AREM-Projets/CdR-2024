@@ -259,6 +259,7 @@ void Embase3Roues::setStep(double x, double y, double theta) {
 
 	if (step_a || step_b || step_c)
 	{
+		while(!movement_allowed);
 		motors_busy = true;
 		commande_step_indiv(step_a, dir_a, step_b, dir_b, step_c, dir_c, 0, FWD);
 		while(motors_busy); // Wait for motors to be off.
@@ -314,7 +315,6 @@ void Embase3Roues::translate(double x, double y) {
 
 	while(distance > BASE_MOVEMENT_DIST_M)
 	{
-		while(!movement_allowed);
 		setStep(0, BASE_MOVEMENT_DIST_M, 0); // Découpage des mouvements
 		distance -= BASE_MOVEMENT_DIST_M;
 	}
