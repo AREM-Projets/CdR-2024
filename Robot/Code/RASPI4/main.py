@@ -16,18 +16,33 @@ import RPi.GPIO as GPIO
 from tkinter import *
 
 
-
+#parametres raspi
 PIN_TIRETTE = 16
 PIN_SELECTEUR_EQUIPE = 15 #23
+DUREE_VIE_SCAN_LIDAR = 2 #duree de vie d'un scan lidar en secondes (au bout de ce temps une mesure du lidar ne sera pas prise en compte)
 
+#parametres LIDAR
+SEUIL_DETECTION = 350 #mm
+FOV = 90 #deg (champ de vision centré)
+
+#commandes actionneur
+ACTIVER_PANNEAU_SOLAIRE = b'e'
 
 #commandes embase
+EQUIPE_BLEUE = b'b'
+EQUIPE_JAUNE = b'j'
+PROG_3_PANNEAUX = b'3'
+PROG_6_PANNEAUX = b'6'
 INIT = b'i' #restart sans redemarrer la carte
 START = b's'
 WAIT = b'w'
+OK = b'k'
+#messages de l'embase
+POS_PANNEAU_OK = b'p'
 
-#parametre LIDAR
-SEUIL_DETECTION = 400 #mm
+
+
+
 
 
 
@@ -79,7 +94,7 @@ def lidar(file_scans):
                         distance = int(mesure[2])
 
                         #publication de la mesure du lidar uniquement si on detecte un obstacle a moins de 20 cm
-                        if(0 < distance < SEUIL_DETECTION):
+                        if((0 < distance < SEUIL_DETECTION)):
                             file_scans.put(f"{date},{angle},{distance}")
 
                     except:
@@ -112,7 +127,6 @@ def main(file_scans, file_score):
     print("Demarrage MAIN...")
 
     score = 30 #6 panneaux et retour zone finale
-    DUREE_VIE_SCAN_LIDAR = 2 #duree de vie d'un scan lidar en secondes (au bout de ce temps une mesure du lidar ne sera pas prise en compte)
 
 
 
@@ -130,9 +144,11 @@ def main(file_scans, file_score):
 
 
     #connexion a l'embase
-    port_embase = serial.Serial('/dev/embase', 115200)
+    port_embase = serial.Serial('/dev/embase', 115200, timeout=1) #timeout en secondes
     print("[OK] Connexion embase")
     port_embase.write(INIT)
+    port_embase.write(EQUIPE_BLEUE)
+    port_embase.write(PROG_3_PANNEAUX)
 
 
     #connextion a la carte des actionneurs
@@ -143,35 +159,34 @@ def main(file_scans, file_score):
     while(GPIO.input(PIN_TIRETTE)): pass
 
 
-
-
-
-
-    port_actionneur.write(b'e') #activation actionneur
-
-    time.sleep(7)
-
-
-    #if (file_scans.empty()):
     port_embase.write(START)
-    #test
+
 
     print("boucle principale")
 
     while(1):
-        #score +=1
         file_score.put(score)
 
         if not file_scans.empty():
             scan = file_scans.get().split(',') #recuperation du dernier scan du lidar
 
-            if(time.monotonic() - float(scan[0]) < DUREE_VIE_SCAN_LIDAR):
+            if( (time.monotonic() - float(scan[0]) < DUREE_VIE_SCAN_LIDAR) and (-FOV/2 < scan[1] < FOV/2)):
                 #si le dernier scan n'est pas perime, on fait des trucs avec
                 print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
                 port_embase.write(WAIT)
 
 
+        if (port_embase.in_waiting):
+            print("Lecture message embase")
+            message = port_embase.read()
+            print(message)
+            port_embase.write(OK)
 
+            if (message == POS_PANNEAU_OK):
+                #port_embase.write(WAIT)
+                port_actionneur.write(ACTIVER_PANNEAU_SOLAIRE) #on actionne le moteur
+                time.sleep(7) #on attends la fin de l'actionneur
+                port_embase.write(START) #on autorise l'embase a poursuivre
 
 
 
