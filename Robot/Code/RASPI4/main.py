@@ -25,6 +25,8 @@ DUREE_VIE_SCAN_LIDAR = 2 #duree de vie d'un scan lidar en secondes (au bout de c
 SEUIL_DETECTION = 350 #mm
 FOV = 90 #deg (champ de vision centré)
 
+#parametres actionneur
+TEMPS_ACTION = 7 #duree de l'action de l'actionneur (pousser un panneau solaire)
 #commandes actionneur
 ACTIVER_PANNEAU_SOLAIRE = b'e'
 
@@ -170,7 +172,7 @@ def main(file_scans, file_score):
         if not file_scans.empty():
             scan = file_scans.get().split(',') #recuperation du dernier scan du lidar
 
-            if( (time.monotonic() - float(scan[0]) < DUREE_VIE_SCAN_LIDAR) and (-FOV/2 < scan[1] < FOV/2)):
+            if( (time.monotonic() - float(scan[0]) < DUREE_VIE_SCAN_LIDAR) and (-FOV/2 < int(scan[1]) < FOV/2)):
                 #si le dernier scan n'est pas perime, on fait des trucs avec
                 print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
                 port_embase.write(WAIT)
@@ -185,7 +187,7 @@ def main(file_scans, file_score):
             if (message == POS_PANNEAU_OK):
                 #port_embase.write(WAIT)
                 port_actionneur.write(ACTIVER_PANNEAU_SOLAIRE) #on actionne le moteur
-                time.sleep(7) #on attends la fin de l'actionneur
+                time.sleep(TEMPS_ACTION) #on attends la fin de l'actionneur
                 port_embase.write(START) #on autorise l'embase a poursuivre
 
 
