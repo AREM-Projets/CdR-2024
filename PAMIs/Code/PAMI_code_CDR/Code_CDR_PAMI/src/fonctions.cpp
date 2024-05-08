@@ -1,3 +1,0 @@
-#include "fonctions.hpp"
-
-/* - - - Fonctions - - - */
