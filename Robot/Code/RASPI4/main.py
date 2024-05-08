@@ -44,7 +44,7 @@ POS_PANNEAU_OK = b'p'
 
 
 
-
+equipe = 0
 
 
 
@@ -55,13 +55,17 @@ def affichage_score(file_score):
     print("Demarrage affichage score...")
 
     def update_affichage_score():
-        score_label.config(text="Score robot: "+str(file_score.get()))
+        if (equipe):
+            score_label.config(text="Equipe Jaune\nScore robot: "+str(file_score.get()))
+        else:
+            score_label.config(text="Equipe Bleue\nScore robot: "+str(file_score.get()))
+
         fenetre.after(100, update_affichage_score)
 
 
 
     fenetre = Tk()
-    score_label = Label(fenetre, text="Score robot: 0", font='Times 50')
+    score_label = Label(fenetre, text="Equipe ?\nScore robot: 0", font='Times 50')
     score_label.pack()
 
     fenetre.after(100, update_affichage_score)
@@ -149,7 +153,12 @@ def main(file_scans, file_score):
     port_embase = serial.Serial('/dev/embase', 115200, timeout=1) #timeout en secondes
     print("[OK] Connexion embase")
     port_embase.write(INIT)
-    port_embase.write(EQUIPE_BLEUE)
+
+    if(equipe):
+        port_embase.write(EQUIPE_JAUNE)
+    else:
+        port_embase.write(EQUIPE_BLEUE)
+
     port_embase.write(PROG_3_PANNEAUX)
 
 
