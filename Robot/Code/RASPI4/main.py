@@ -44,7 +44,6 @@ POS_PANNEAU_OK = b'p'
 
 
 
-equipe = 0
 
 
 
@@ -142,6 +141,7 @@ def main(file_scans, file_score):
     GPIO.setup(PIN_TIRETTE, GPIO.IN, pull_up_down = GPIO.PUD_UP) #set la pin 16 en input pulldown pour la tirette
     GPIO.setup(PIN_SELECTEUR_EQUIPE, GPIO.IN, pull_up_down = GPIO.PUD_UP) #set la pin 26 en input pulldown pour le sélecteur équipe à 0 par défaut : 0:Bleu; 1:Jaune
 
+    global equipe
     equipe = GPIO.input(PIN_SELECTEUR_EQUIPE) #0: bleu; 1:jaune
 
     print("tirette:", GPIO.input(PIN_TIRETTE))
