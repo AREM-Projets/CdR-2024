@@ -47,14 +47,14 @@ POS_PANNEAU_OK = b'p'
 
 
 
-def affichage_score(file_score):
+def affichage_score(file_score, file_equipe):
     """
     Processus qui affiche et met a jour le score du robot
     """
     print("Demarrage affichage score...")
 
     def update_affichage_score():
-        if (equipe):
+        if (file_equipe.get() == '1'):
             score_label.config(text="Equipe Jaune\nScore robot: "+str(file_score.get()))
         else:
             score_label.config(text="Equipe Bleue\nScore robot: "+str(file_score.get()))
@@ -128,7 +128,7 @@ def lidar(file_scans):
 
 
 
-def main(file_scans, file_score):
+def main(file_scans, file_score, file_equipe):
     print("Demarrage MAIN...")
 
     score = 30 #6 panneaux et retour zone finale
@@ -141,8 +141,8 @@ def main(file_scans, file_score):
     GPIO.setup(PIN_TIRETTE, GPIO.IN, pull_up_down = GPIO.PUD_UP) #set la pin 16 en input pulldown pour la tirette
     GPIO.setup(PIN_SELECTEUR_EQUIPE, GPIO.IN, pull_up_down = GPIO.PUD_UP) #set la pin 26 en input pulldown pour le sélecteur équipe à 0 par défaut : 0:Bleu; 1:Jaune
 
-    global equipe
     equipe = GPIO.input(PIN_SELECTEUR_EQUIPE) #0: bleu; 1:jaune
+    file_equipe.put(str(equipe))
 
     print("tirette:", GPIO.input(PIN_TIRETTE))
     print("équipe:", equipe)
@@ -226,11 +226,12 @@ if __name__ == "__main__":
     # Files de communication entre processus
     file_scans = Queue() # stocke les valeurs envoyees par le lidar si il detecte
     file_score = Queue() #stocke les valeurs de score calculées pour les passer au processus d'affichage
+    file_equipe =Queue() #stocke l'equipe au debut du match
 
     # Creation des processus concourants pour le robot
     lidar_process =             Process(target=lidar, args=(file_scans,))
-    affichage_score_process =   Process(target=affichage_score, args=(file_score,))
-    main_process =              Process(target=main, args=(file_scans, file_score))
+    affichage_score_process =   Process(target=affichage_score, args=(file_score,file_equipe))
+    main_process =              Process(target=main, args=(file_scans, file_score, file_equipe))
 
 
     # Demarrage des processus, attente de 90 secondes et arret des processus
