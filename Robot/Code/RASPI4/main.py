@@ -20,6 +20,7 @@ from tkinter import *
 PIN_TIRETTE = 16
 PIN_SELECTEUR_EQUIPE = 15 #23
 DUREE_VIE_SCAN_LIDAR = 2 #duree de vie d'un scan lidar en secondes (au bout de ce temps une mesure du lidar ne sera pas prise en compte)
+TIMEOUT_ROBOT = 1000 #s
 
 #parametres LIDAR
 SEUIL_DETECTION = 350 #mm
@@ -160,6 +161,7 @@ def main(file_scans, file_score, file_equipe):
     else:
         port_embase.write(EQUIPE_BLEUE)
 
+    port_embase.write(WAIT) #essai pour que le robot ne roule pas au debut ?
     port_embase.write(INIT)
 
     
@@ -171,6 +173,7 @@ def main(file_scans, file_score, file_equipe):
 
     #bloquage tant que la tirette n'est pas tiree
     while(GPIO.input(PIN_TIRETTE)): pass
+    t0 = time.monotonic() #on enregistre la date de depart
 
 
     port_embase.write(START)
@@ -178,7 +181,7 @@ def main(file_scans, file_score, file_equipe):
 
     print("boucle principale")
 
-    while(1):
+    while( time.monotonic() - t0 < 90 ):
         file_score.put(score)
 
         if not file_scans.empty():
@@ -252,7 +255,7 @@ if __name__ == "__main__":
     main_process.start()
     print("Processus demarres.\n")
 
-    time.sleep(90)
+    time.sleep(TIMEOUT_ROBOT) #secondes
 
     print("Arret des processus...")
     lidar_process.terminate()
