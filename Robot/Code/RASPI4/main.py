@@ -187,7 +187,7 @@ def main(file_scans, file_score, file_equipe):
             if( (time.monotonic() - float(scan[0]) < DUREE_VIE_SCAN_LIDAR) ):     #and (-FOV/2 < int(scan[1]) < FOV/2)):
                 #si le dernier scan n'est pas perime, on fait des trucs avec
 
-                if (not equipe):
+                if (equipe == 0):
                     #bleu
                     if (-FOV/2 < int(scan[1]) < FOV/2): #on regarde devant
                         print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
