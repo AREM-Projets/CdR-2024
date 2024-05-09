@@ -184,7 +184,7 @@ def main(file_scans, file_score, file_equipe):
         if not file_scans.empty():
             scan = file_scans.get().split(',') #recuperation du dernier scan du lidar
 
-            if( (time.monotonic() - float(scan[0]) < DUREE_VIE_SCAN_LIDAR) and (-FOV/2 < int(scan[1]) < FOV/2)):
+            if( (time.monotonic() - float(scan[0]) < DUREE_VIE_SCAN_LIDAR) ):     #and (-FOV/2 < int(scan[1]) < FOV/2)):
                 #si le dernier scan n'est pas perime, on fait des trucs avec
                 print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
                 port_embase.write(WAIT)
