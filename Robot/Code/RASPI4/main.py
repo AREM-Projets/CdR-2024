@@ -132,7 +132,7 @@ def lidar(file_scans):
 def main(file_scans, file_score, file_equipe):
     print("Demarrage MAIN...")
 
-    score = 25 #score estime
+    score = 15 #score estime
 
     #setup de la tirette et du selecteur equipe
     GPIO.setmode(GPIO.BCM)
