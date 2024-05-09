@@ -186,8 +186,18 @@ def main(file_scans, file_score, file_equipe):
 
             if( (time.monotonic() - float(scan[0]) < DUREE_VIE_SCAN_LIDAR) ):     #and (-FOV/2 < int(scan[1]) < FOV/2)):
                 #si le dernier scan n'est pas perime, on fait des trucs avec
-                print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
-                port_embase.write(WAIT)
+
+                if (equipe):
+                    #bleu
+                    if (-FOV/2 < int(scan[1]) < FOV/2): #on regarde devant
+                        print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
+                        port_embase.write(WAIT)
+
+                else:
+                    #jaune
+                    if (180-FOV/2 < int(scan[1]) < 180+FOV/2): #on regarde derriere
+                        print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
+                        port_embase.write(WAIT)
 
 
         if (port_embase.in_waiting):
