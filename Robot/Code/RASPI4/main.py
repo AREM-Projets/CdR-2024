@@ -161,7 +161,6 @@ def main(file_scans, file_score, file_equipe):
 
     #port_embase.write(WAIT) #essai pour que le robot ne roule pas au debut ?
     port_embase.write(INIT)
-    port_embase.write(INIT)
 
     
 
