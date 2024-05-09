@@ -20,14 +20,14 @@ from tkinter import *
 PIN_TIRETTE = 16
 PIN_SELECTEUR_EQUIPE = 15 #23
 DUREE_VIE_SCAN_LIDAR = 2 #duree de vie d'un scan lidar en secondes (au bout de ce temps une mesure du lidar ne sera pas prise en compte)
-TIMEOUT_ROBOT = 1000 #s
+TIMEOUT_ROBOT = 1000 #s (16,6 min)
 
 #parametres LIDAR
 SEUIL_DETECTION = 350 #mm
 FOV = 90 #deg (champ de vision centré)
 
 #parametres actionneur
-TEMPS_ACTION = 7 #duree de l'action de l'actionneur (pousser un panneau solaire)
+TEMPS_ACTION = 7 #s duree de l'action de l'actionneur (pousser un panneau solaire)
 #commandes actionneur
 ACTIVER_PANNEAU_SOLAIRE = b'e'
 
@@ -134,8 +134,6 @@ def main(file_scans, file_score, file_equipe):
 
     score = 25 #score estime
 
-
-
     #setup de la tirette et du selecteur equipe
     GPIO.setmode(GPIO.BCM)
 
@@ -154,14 +152,14 @@ def main(file_scans, file_score, file_equipe):
     port_embase = serial.Serial('/dev/embase', 115200, timeout=1) #timeout en secondes
     print("[OK] Connexion embase")
 
-    port_embase.write(PROG_3_PANNEAUX)
-
-    if(equipe):
+    if(equipe == 1):
         port_embase.write(EQUIPE_JAUNE)
     else:
         port_embase.write(EQUIPE_BLEUE)
 
-    port_embase.write(WAIT) #essai pour que le robot ne roule pas au debut ?
+    port_embase.write(PROG_3_PANNEAUX) #version du code raspi pour 3 panneaux
+
+    #port_embase.write(WAIT) #essai pour que le robot ne roule pas au debut ?
     port_embase.write(INIT)
 
     
@@ -184,7 +182,7 @@ def main(file_scans, file_score, file_equipe):
     while( time.monotonic() - t0 < 90 ):
         file_score.put(score)
 
-        if not file_scans.empty():
+        if (not file_scans.empty()):
             scan = file_scans.get().split(',') #recuperation du dernier scan du lidar
 
             if( (time.monotonic() - float(scan[0]) < DUREE_VIE_SCAN_LIDAR) ):     #and (-FOV/2 < int(scan[1]) < FOV/2)):
@@ -194,13 +192,15 @@ def main(file_scans, file_score, file_equipe):
                     #bleu
                     if (-FOV/2 < int(scan[1]) < FOV/2): #on regarde devant
                         print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
-                        port_embase.write(WAIT)
+                        port_embase.write(WAIT) #si ya un truc devant on s'arrete
 
                 else:
                     #jaune
                     if (180-FOV/2 < int(scan[1]) < 180+FOV/2): #on regarde derriere
                         print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
                         port_embase.write(WAIT)
+
+
 
 
         if (port_embase.in_waiting):
@@ -214,17 +214,6 @@ def main(file_scans, file_score, file_equipe):
                 port_actionneur.write(ACTIVER_PANNEAU_SOLAIRE) #on actionne le moteur
                 time.sleep(TEMPS_ACTION) #on attends la fin de l'actionneur
                 port_embase.write(START) #on autorise l'embase a poursuivre
-
-
-
-
-
-
-
-
-
-
-
 
 
 
