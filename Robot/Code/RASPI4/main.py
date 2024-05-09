@@ -193,12 +193,19 @@ def main(file_scans, file_score, file_equipe):
                     if (-FOV/2 < int(scan[1]) < FOV/2): #on regarde devant
                         print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
                         port_embase.write(WAIT) #si ya un truc devant on s'arrete
+                        time.sleep(1)
+                        port_embase.write(START)
+
+                        
+                        
 
                 else:
                     #jaune
                     if (180-FOV/2 < int(scan[1]) < 180+FOV/2): #on regarde derriere
                         print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
                         port_embase.write(WAIT)
+                        time.sleep(1)
+                        port_embase.write(START)
 
 
 
