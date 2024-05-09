@@ -152,14 +152,17 @@ def main(file_scans, file_score):
     #connexion a l'embase
     port_embase = serial.Serial('/dev/embase', 115200, timeout=1) #timeout en secondes
     print("[OK] Connexion embase")
-    port_embase.write(INIT)
+
+    port_embase.write(PROG_3_PANNEAUX)
 
     if(equipe):
         port_embase.write(EQUIPE_JAUNE)
     else:
         port_embase.write(EQUIPE_BLEUE)
 
-    port_embase.write(PROG_3_PANNEAUX)
+    port_embase.write(INIT)
+
+    
 
 
     #connextion a la carte des actionneurs
