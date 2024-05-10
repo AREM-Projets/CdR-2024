@@ -19,8 +19,10 @@ from tkinter import *
 #parametres raspi
 PIN_TIRETTE = 16
 PIN_SELECTEUR_EQUIPE = 15 #23
-DUREE_VIE_SCAN_LIDAR = 0.1 #duree de vie d'un scan lidar en secondes (au bout de ce temps une mesure du lidar ne sera pas prise en compte)
+DUREE_VIE_SCAN_LIDAR = 0.5 #duree de vie d'un scan lidar en secondes (au bout de ce temps une mesure du lidar ne sera pas prise en compte)
+SEUIL_TEMPS_DETECTION_OBSTACLE = 0.100 #s #ecartement max entre deux mesures lidar considerees comme voisines temporellement
 TIMEOUT_ROBOT = 1000 #s (16,6 min)
+SEUIL_DANGER_ARRET_COMPLET = 3 #nombre de detections LIDAR au bout duquel on stoppe le robot puis on le redemarre si plus d'obstacle
 
 #parametres LIDAR
 SEUIL_DETECTION = 350 #mm
@@ -133,7 +135,14 @@ def main(file_scans, file_score, file_equipe):
     print("Demarrage MAIN...")
 
     score = 25 #score estime
-    nb_pts_vus_lidar = 0
+    danger = 0 #niveau de danger obstacle
+    t_derniere_mesure = 0 #date de la derniere mesure recup du lidar
+    flag_embase_en_mouvement = False
+
+
+
+
+
 
     #setup de la tirette et du selecteur equipe
     GPIO.setmode(GPIO.BCM)
@@ -172,47 +181,85 @@ def main(file_scans, file_score, file_equipe):
 
     #bloquage tant que la tirette n'est pas tiree
     while(GPIO.input(PIN_TIRETTE)): pass
-    t0 = time.monotonic() #on enregistre la date de depart
+    t_start = time.monotonic() #on enregistre la date de depart
 
 
     port_embase.write(START)
+    flag_embase_en_mouvement = True
+
+
+
+
+
+
 
 
     print("boucle principale")
 
-    while( time.monotonic() - t0 < 90 ):
-        file_score.put(score)
+    #-------------------------------------------------------------------------------------------------
 
+    while( time.monotonic() - t_start < 90 ):
+        file_score.put(score)
+        print("ecart mesures lidar:", delta_t_mes)
+        print("niveau de danger:", danger)
+        print("flag mvt:", flag_embase_en_mouvement)
+
+
+        #controle lidar
         if (not file_scans.empty()):
             scan = file_scans.get().split(',') #recuperation du dernier scan du lidar
+            scan_date = float(scan[0])
+            scan_angle = float(scan[1])
+            scan_dist = float(scan[2])
 
-            if( (time.monotonic() - float(scan[0]) < DUREE_VIE_SCAN_LIDAR) ):     #and (-FOV/2 < int(scan[1]) < FOV/2)):
-                #si le dernier scan n'est pas perime, on fait des trucs avec
+            delta_t_mes = scan_date - t_derniere_mesure
+            t_derniere_mesure = scan_date
+
+            if (delta_t_mes > SEUIL_TEMPS_DETECTION_OBSTACLE):
+                danger = 0
+            else:
+                danger += 1
+
+            #controle redemarrage
+            if (not flag_embase_en_mouvement): #si l'embase est a l'arret
+                if (scan_date > DUREE_VIE_SCAN_LIDAR): #si le dernier scan est vieux, on redemarre
+                    # ici potentiel probleme: si il n'y a plus de mesure du lidar dispo on passe pas par ici
+                    # hypothese potentiellement foireuse: on a toujours des mesures dispos...
+                    port_embase.write(START)
+                    flag_embase_en_mouvement = True
+
+        
+
+        #controle danger
+        if (danger > SEUIL_DANGER_ARRET_COMPLET):
+            port_embase.write(WAIT)
+            flag_embase_en_mouvement = False
+
+        
+
+
+            # if( (t_derniere_mesure - scan_date < DUREE_VIE_SCAN_LIDAR) ):     #and (-FOV/2 < int(scan[1]) < FOV/2)):
+            #     #si le dernier scan n'est pas perime, on fait des trucs avec
 
                 
-                if (equipe == 0):
-                    #bleu
-                    if ( (360-FOV/2 < int(scan[1]) < 360) or  (0 < int(scan[1]) < FOV/2) ): #on regarde devanT
-                        print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
-                        port_embase.write(WAIT) #si ya un truc devant on s'arrete
-                            
+            #     if (equipe == 0):
+            #         #bleu
+            #         if ( (360-FOV/2 < int(scan[1]) < 360) or  (0 < int(scan[1]) < FOV/2) ): #on regarde devanT
+            #             print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
+            #             port_embase.write(WAIT) #si ya un truc devant on s'arrete
 
-                        
                     
-                else:
-                    #jaune
-                    if (180-FOV/2 < int(scan[1]) < 180+FOV/2): #on regarde derriere
-                        print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
-                        port_embase.write(WAIT)
+            #     else:
+            #         #jaune
+            #         if (180-FOV/2 < int(scan[1]) < 180+FOV/2): #on regarde derriere
+            #             print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
+            #             port_embase.write(WAIT)
 
-            else:
-                #si le dernier scan du lidar est trop vieux on reset le nombre de mesures proches
-                nb_pts_vus_lidar = 0
                         
 
 
 
-
+        #controle actionneur
         if (port_embase.in_waiting):
             print("Lecture message embase")
             message = port_embase.read()
@@ -224,6 +271,15 @@ def main(file_scans, file_score, file_equipe):
                 port_actionneur.write(ACTIVER_PANNEAU_SOLAIRE) #on actionne le moteur
                 time.sleep(TEMPS_ACTION) #on attends la fin de l'actionneur
                 port_embase.write(START) #on autorise l'embase a poursuivre
+
+
+
+    #-------------------------------------------------------------------------------------------------
+
+
+
+
+
 
 
 
