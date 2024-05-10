@@ -132,7 +132,7 @@ def lidar(file_scans):
 def main(file_scans, file_score, file_equipe):
     print("Demarrage MAIN...")
 
-    score = 15 #score estime
+    score = 25 #score estime
     nb_pts_vus_lidar = 0
 
     #setup de la tirette et du selecteur equipe
