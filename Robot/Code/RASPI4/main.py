@@ -19,7 +19,7 @@ from tkinter import *
 #parametres raspi
 PIN_TIRETTE = 16
 PIN_SELECTEUR_EQUIPE = 15 #23
-DUREE_VIE_SCAN_LIDAR = 0.5 #duree de vie d'un scan lidar en secondes (au bout de ce temps une mesure du lidar ne sera pas prise en compte)
+ECART_TEMPOREL_DANGER = 0.5 #duree de vie d'un scan lidar en secondes (au bout de ce temps une mesure du lidar ne sera pas prise en compte)
 SEUIL_TEMPS_DETECTION_OBSTACLE = 0.100 #s #ecartement max entre deux mesures lidar considerees comme voisines temporellement
 TIMEOUT_ROBOT = 1000 #s (16,6 min)
 SEUIL_DANGER_ARRET_COMPLET = 3 #nombre de detections LIDAR au bout duquel on stoppe le robot puis on le redemarre si plus d'obstacle
@@ -219,14 +219,10 @@ def main(file_scans, file_score, file_equipe):
                 danger = 0
             else:
                 danger += 1
+        else:
+            danger = 0
 
-            # #controle redemarrage
-            # if (not flag_embase_en_mouvement): #si l'embase est a l'arret
-            #     if (scan_date > DUREE_VIE_SCAN_LIDAR): #si le dernier scan est vieux, on redemarre
-            #         # ici potentiel probleme: si il n'y a plus de mesure du lidar dispo on passe pas par ici
-            #         # hypothese potentiellement foireuse: on a toujours des mesures dispos...
-            #         port_embase.write(START)
-            #         flag_embase_en_mouvement = True
+           
 
         
 
@@ -234,11 +230,12 @@ def main(file_scans, file_score, file_equipe):
         if (danger > SEUIL_DANGER_ARRET_COMPLET and flag_embase_en_mouvement):
             port_embase.write(WAIT)
             flag_embase_en_mouvement = False
-            time.sleep(0.5) #timing
+            #time.sleep(0.5) #timing
 
-        elif (danger < SEUIL_DANGER_ARRET_COMPLET and not flag_embase_en_mouvement):
+        if (danger < SEUIL_DANGER_ARRET_COMPLET and not flag_embase_en_mouvement):
             port_embase.write(START)
             flag_embase_en_mouvement = True
+            danger = 0
 
         
 
