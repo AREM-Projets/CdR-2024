@@ -175,7 +175,7 @@ def main(file_scans, file_score, file_equipe):
     else:
         port_embase.write(EQUIPE_BLEUE)
 
-    port_embase.write(PROG_6_PANNEAUX) #version du code raspi pour 3 panneaux
+    port_embase.write(PROG_3_PANNEAUX) #version du code raspi pour 3 panneaux
 
     #port_embase.write(WAIT) #essai pour que le robot ne roule pas au debut ?
     port_embase.write(INIT)
