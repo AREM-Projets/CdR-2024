@@ -220,21 +220,25 @@ def main(file_scans, file_score, file_equipe):
             else:
                 danger += 1
 
-            #controle redemarrage
-            if (not flag_embase_en_mouvement): #si l'embase est a l'arret
-                if (scan_date > DUREE_VIE_SCAN_LIDAR): #si le dernier scan est vieux, on redemarre
-                    # ici potentiel probleme: si il n'y a plus de mesure du lidar dispo on passe pas par ici
-                    # hypothese potentiellement foireuse: on a toujours des mesures dispos...
-                    port_embase.write(START)
-                    flag_embase_en_mouvement = True
+            # #controle redemarrage
+            # if (not flag_embase_en_mouvement): #si l'embase est a l'arret
+            #     if (scan_date > DUREE_VIE_SCAN_LIDAR): #si le dernier scan est vieux, on redemarre
+            #         # ici potentiel probleme: si il n'y a plus de mesure du lidar dispo on passe pas par ici
+            #         # hypothese potentiellement foireuse: on a toujours des mesures dispos...
+            #         port_embase.write(START)
+            #         flag_embase_en_mouvement = True
 
         
 
         #controle danger
-        if (danger > SEUIL_DANGER_ARRET_COMPLET):
+        if (danger > SEUIL_DANGER_ARRET_COMPLET and flag_embase_en_mouvement):
             port_embase.write(WAIT)
             flag_embase_en_mouvement = False
             time.sleep(0.5) #timing
+
+        elif (danger < SEUIL_DANGER_ARRET_COMPLET and not flag_embase_en_mouvement):
+            port_embase.write(START)
+            flag_embase_en_mouvement = True
 
         
 
