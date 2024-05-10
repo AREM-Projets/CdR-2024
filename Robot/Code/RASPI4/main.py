@@ -21,6 +21,7 @@ PIN_TIRETTE = 16
 PIN_SELECTEUR_EQUIPE = 15 #23
 ECART_TEMPOREL_DANGER = 0.5 #duree de vie d'un scan lidar en secondes (au bout de ce temps une mesure du lidar ne sera pas prise en compte)
 SEUIL_TEMPS_DETECTION_OBSTACLE = 1E-6 #s #ecartement max entre deux mesures lidar considerees comme voisines temporellement
+SEUIL_ANGLE_DETECTION_OBSTACLE = 2
 TIMEOUT_ROBOT = 1000 #s (16,6 min)
 SEUIL_DANGER_ARRET_COMPLET = 3 #nombre de detections LIDAR au bout duquel on stoppe le robot puis on le redemarre si plus d'obstacle
 
@@ -135,10 +136,16 @@ def main(file_scans, file_score, file_equipe):
     print("Demarrage MAIN...")
 
     score = 25 #score estime
+
     danger = 0 #niveau de danger obstacle
     t_derniere_mesure = 0 #date de la derniere mesure recup du lidar
-    flag_embase_en_mouvement = False
     delta_t_mes = 0
+    
+    angle_derniere_mesure = 0 #possible source d'emmerdes !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    delta_a_mes = 0 #ecart angulaire entre les deux dernieres mesures lidar
+    
+    flag_embase_en_mouvement = False
+    
 
 
 
@@ -212,13 +219,24 @@ def main(file_scans, file_score, file_equipe):
             scan_angle = float(scan[1])
             scan_dist = float(scan[2])
 
-            delta_t_mes = scan_date - t_derniere_mesure
-            t_derniere_mesure = scan_date
+            # delta_t_mes = scan_date - t_derniere_mesure
+            # t_derniere_mesure = scan_date
 
-            if (delta_t_mes < SEUIL_TEMPS_DETECTION_OBSTACLE):
+            # if (delta_t_mes < SEUIL_TEMPS_DETECTION_OBSTACLE):
+            #     danger += 1
+            # else:
+            #     danger = 0
+
+            delta_a_mes = abs(scan_angle - angle_derniere_mesure)
+            angle_derniere_mesure = scan_angle
+
+            if (delta_a_mes < SEUIL_ANGLE_DETECTION_OBSTACLE or delta_a_mes > 360-SEUIL_ANGLE_DETECTION_OBSTACLE):
+                #danger
                 danger += 1
             else:
                 danger = 0
+
+
         else:
             danger = 0
 
