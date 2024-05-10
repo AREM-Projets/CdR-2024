@@ -23,7 +23,7 @@ ECART_TEMPOREL_DANGER = 0.5 #duree de vie d'un scan lidar en secondes (au bout d
 SEUIL_TEMPS_DETECTION_OBSTACLE = 1E-6 #s #ecartement max entre deux mesures lidar considerees comme voisines temporellement
 SEUIL_ANGLE_DETECTION_OBSTACLE = 2
 TIMEOUT_ROBOT = 1000 #s (16,6 min)
-SEUIL_DANGER_ARRET_COMPLET = 3 #nombre de detections LIDAR au bout duquel on stoppe le robot puis on le redemarre si plus d'obstacle
+SEUIL_DANGER_ARRET_COMPLET = 10 #nombre de detections LIDAR au bout duquel on stoppe le robot puis on le redemarre si plus d'obstacle
 
 #parametres LIDAR
 SEUIL_DETECTION = 350 #mm
@@ -239,7 +239,8 @@ def main(file_scans, file_score, file_equipe):
 
 
         else:
-            danger = 0
+            #danger = 0
+            pass
 
            
 
