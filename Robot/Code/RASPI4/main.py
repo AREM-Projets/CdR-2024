@@ -234,7 +234,8 @@ def main(file_scans, file_score, file_equipe):
                 #danger
                 danger += 1
             else:
-                danger = 0
+                #danger = 0
+                pass
 
 
         else:
