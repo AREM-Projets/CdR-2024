@@ -138,7 +138,7 @@ def main(file_scans, file_score, file_equipe):
     danger = 0 #niveau de danger obstacle
     t_derniere_mesure = 0 #date de la derniere mesure recup du lidar
     flag_embase_en_mouvement = False
-
+    delta_t_mes = 0
 
 
 
