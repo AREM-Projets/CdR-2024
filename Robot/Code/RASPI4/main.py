@@ -215,10 +215,10 @@ def main(file_scans, file_score, file_equipe):
             delta_t_mes = scan_date - t_derniere_mesure
             t_derniere_mesure = scan_date
 
-            if (delta_t_mes > SEUIL_TEMPS_DETECTION_OBSTACLE):
-                danger = 0
-            else:
+            if (delta_t_mes < SEUIL_TEMPS_DETECTION_OBSTACLE):
                 danger += 1
+            else:
+                danger = 0
         else:
             danger = 0
 
