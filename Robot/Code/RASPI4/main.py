@@ -19,12 +19,12 @@ from tkinter import *
 #parametres raspi
 PIN_TIRETTE = 16
 PIN_SELECTEUR_EQUIPE = 15 #23
-DUREE_VIE_SCAN_LIDAR = 2 #duree de vie d'un scan lidar en secondes (au bout de ce temps une mesure du lidar ne sera pas prise en compte)
+DUREE_VIE_SCAN_LIDAR = 0.1 #duree de vie d'un scan lidar en secondes (au bout de ce temps une mesure du lidar ne sera pas prise en compte)
 TIMEOUT_ROBOT = 1000 #s (16,6 min)
 
 #parametres LIDAR
-SEUIL_DETECTION = 400 #mm
-FOV = 160 #deg (champ de vision centré)
+SEUIL_DETECTION = 350 #mm
+FOV = 100 #deg (champ de vision centré)
 
 #parametres actionneur
 TEMPS_ACTION = 7 #s duree de l'action de l'actionneur (pousser un panneau solaire)
@@ -133,6 +133,7 @@ def main(file_scans, file_score, file_equipe):
     print("Demarrage MAIN...")
 
     score = 15 #score estime
+    nb_pts_vus_lidar = 0
 
     #setup de la tirette et du selecteur equipe
     GPIO.setmode(GPIO.BCM)
@@ -188,23 +189,25 @@ def main(file_scans, file_score, file_equipe):
             if( (time.monotonic() - float(scan[0]) < DUREE_VIE_SCAN_LIDAR) ):     #and (-FOV/2 < int(scan[1]) < FOV/2)):
                 #si le dernier scan n'est pas perime, on fait des trucs avec
 
+                
                 if (equipe == 0):
                     #bleu
-                    # if (-FOV/2 < int(scan[1]) < FOV/2): #on regarde devant
+                    if ( (360-FOV/2 < int(scan[1]) < 360) or  (0 < int(scan[1]) < FOV/2) ): #on regarde devanT
+                        print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
+                        port_embase.write(WAIT) #si ya un truc devant on s'arrete
+                            
 
-                    print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
-                    port_embase.write(WAIT) #si ya un truc devant on s'arrete
                         
-
-                        
-                        
-
+                    
                 else:
                     #jaune
-                    # if (180-FOV/2 < int(scan[1]) < 180+FOV/2): #on regarde derriere
-                    
-                    print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
-                    port_embase.write(WAIT)
+                    if (180-FOV/2 < int(scan[1]) < 180+FOV/2): #on regarde derriere
+                        print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
+                        port_embase.write(WAIT)
+
+            else:
+                #si le dernier scan du lidar est trop vieux on reset le nombre de mesures proches
+                nb_pts_vus_lidar = 0
                         
 
 
