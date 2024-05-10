@@ -234,6 +234,7 @@ def main(file_scans, file_score, file_equipe):
         if (danger > SEUIL_DANGER_ARRET_COMPLET):
             port_embase.write(WAIT)
             flag_embase_en_mouvement = False
+            time.sleep(0.5) #timing
 
         
 
