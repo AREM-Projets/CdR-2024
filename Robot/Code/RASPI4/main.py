@@ -207,7 +207,7 @@ def main(file_scans, file_score, file_equipe):
 
     while( time.monotonic() - t_start < 90 ):
         file_score.put(score)
-        print("ecart mesures lidar:", delta_t_mes)
+        print("ecart mesures lidar:", delta_a_mes)
         print("niveau de danger:", danger)
         print("flag mvt:", flag_embase_en_mouvement)
 
