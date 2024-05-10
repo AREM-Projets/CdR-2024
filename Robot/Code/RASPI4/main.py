@@ -190,9 +190,10 @@ def main(file_scans, file_score, file_equipe):
 
                 if (equipe == 0):
                     #bleu
-                    if (-FOV/2 < int(scan[1]) < FOV/2): #on regarde devant
-                        print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
-                        port_embase.write(WAIT) #si ya un truc devant on s'arrete
+                    # if (-FOV/2 < int(scan[1]) < FOV/2): #on regarde devant
+
+                    print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
+                    port_embase.write(WAIT) #si ya un truc devant on s'arrete
                         
 
                         
@@ -200,9 +201,10 @@ def main(file_scans, file_score, file_equipe):
 
                 else:
                     #jaune
-                    if (180-FOV/2 < int(scan[1]) < 180+FOV/2): #on regarde derriere
-                        print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
-                        port_embase.write(WAIT)
+                    # if (180-FOV/2 < int(scan[1]) < 180+FOV/2): #on regarde derriere
+                    
+                    print("\nSCAN: ({}) {}".format(time.monotonic(), scan))
+                    port_embase.write(WAIT)
                         
 
 
