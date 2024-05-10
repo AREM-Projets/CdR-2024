@@ -20,7 +20,7 @@ from tkinter import *
 PIN_TIRETTE = 16
 PIN_SELECTEUR_EQUIPE = 15 #23
 ECART_TEMPOREL_DANGER = 0.5 #duree de vie d'un scan lidar en secondes (au bout de ce temps une mesure du lidar ne sera pas prise en compte)
-SEUIL_TEMPS_DETECTION_OBSTACLE = 0.100 #s #ecartement max entre deux mesures lidar considerees comme voisines temporellement
+SEUIL_TEMPS_DETECTION_OBSTACLE = 5E-6 #s #ecartement max entre deux mesures lidar considerees comme voisines temporellement
 TIMEOUT_ROBOT = 1000 #s (16,6 min)
 SEUIL_DANGER_ARRET_COMPLET = 3 #nombre de detections LIDAR au bout duquel on stoppe le robot puis on le redemarre si plus d'obstacle
 
