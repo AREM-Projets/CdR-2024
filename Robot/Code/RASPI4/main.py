@@ -24,6 +24,7 @@ SEUIL_TEMPS_DETECTION_OBSTACLE = 1E-6 #s #ecartement max entre deux mesures lida
 SEUIL_ANGLE_DETECTION_OBSTACLE = 2
 TIMEOUT_ROBOT = 1000 #s (16,6 min)
 SEUIL_DANGER_ARRET_COMPLET = 10 #nombre de detections LIDAR au bout duquel on stoppe le robot puis on le redemarre si plus d'obstacle
+SEUIL_TEMPS_REDEMARRAGE = 1 #s
 
 #parametres LIDAR
 SEUIL_DETECTION = 350 #mm
@@ -207,7 +208,9 @@ def main(file_scans, file_score, file_equipe):
 
     while( time.monotonic() - t_start < 90 ):
         file_score.put(score)
-        print("ecart mesures lidar:", delta_a_mes)
+        # print("ecart mesures lidar:", delta_a_mes)
+        print("ecart mesures lidar:", delta_t_mes)
+
         print("niveau de danger:", danger)
         print("flag mvt:", flag_embase_en_mouvement)
 
@@ -219,31 +222,34 @@ def main(file_scans, file_score, file_equipe):
             scan_angle = float(scan[1])
             scan_dist = float(scan[2])
 
-            # delta_t_mes = scan_date - t_derniere_mesure
-            # t_derniere_mesure = scan_date
 
-            # if (delta_t_mes < SEUIL_TEMPS_DETECTION_OBSTACLE):
-            #     danger += 1
-            # else:
-            #     danger = 0
+            delta_t_mes = scan_date - t_derniere_mesure
+            t_derniere_mesure = scan_date
 
-            delta_a_mes = abs(scan_angle - angle_derniere_mesure)
-            angle_derniere_mesure = scan_angle
-
-            if (delta_a_mes < SEUIL_ANGLE_DETECTION_OBSTACLE or delta_a_mes > 360-SEUIL_ANGLE_DETECTION_OBSTACLE):
-                #danger
+            if (delta_t_mes < SEUIL_TEMPS_DETECTION_OBSTACLE):
                 danger += 1
             else:
-                #danger = 0
                 pass
+
+            
+
+
+            # delta_a_mes = abs(scan_angle - angle_derniere_mesure)
+            # angle_derniere_mesure = scan_angle
+
+            # if (delta_a_mes < SEUIL_ANGLE_DETECTION_OBSTACLE or delta_a_mes > 360-SEUIL_ANGLE_DETECTION_OBSTACLE):
+            #     #danger
+            #     danger += 1
+            # else:
+            #     pass
 
 
         else:
-            danger = 0
             pass
 
            
-
+        if (time.monotonic() - t_derniere_mesure > SEUIL_TEMPS_REDEMARRAGE):
+            danger = 0
         
 
         #controle danger
