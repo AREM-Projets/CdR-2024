@@ -208,8 +208,8 @@ def main(file_scans, file_score, file_equipe):
 
     while( time.monotonic() - t_start < 90 ):
         file_score.put(score)
-        # print("ecart mesures lidar:", delta_a_mes)
-        print("ecart mesures lidar:", delta_t_mes)
+        print("ecart mesures lidar:", delta_a_mes)
+        # print("ecart mesures lidar:", delta_t_mes)
 
         print("niveau de danger:", danger)
         print("flag mvt:", flag_embase_en_mouvement)
@@ -223,29 +223,24 @@ def main(file_scans, file_score, file_equipe):
             scan_dist = float(scan[2])
 
 
-            delta_t_mes = scan_date - t_derniere_mesure
+            # delta_t_mes = scan_date - t_derniere_mesure
             t_derniere_mesure = scan_date
 
-            if (delta_t_mes < SEUIL_TEMPS_DETECTION_OBSTACLE):
-                danger += 1
-            else:
-                pass
-
-            
-
-
-            # delta_a_mes = abs(scan_angle - angle_derniere_mesure)
-            # angle_derniere_mesure = scan_angle
-
-            # if (delta_a_mes < SEUIL_ANGLE_DETECTION_OBSTACLE or delta_a_mes > 360-SEUIL_ANGLE_DETECTION_OBSTACLE):
-            #     #danger
+            # if (delta_t_mes < SEUIL_TEMPS_DETECTION_OBSTACLE):
             #     danger += 1
             # else:
             #     pass
 
+            
 
-        else:
-            pass
+
+            delta_a_mes = abs(scan_angle - angle_derniere_mesure)
+            angle_derniere_mesure = scan_angle
+
+            if (delta_a_mes < SEUIL_ANGLE_DETECTION_OBSTACLE or delta_a_mes > 360-SEUIL_ANGLE_DETECTION_OBSTACLE):
+                #danger
+                danger += 1
+        
 
            
         if (time.monotonic() - t_derniere_mesure > SEUIL_TEMPS_REDEMARRAGE):
@@ -256,9 +251,7 @@ def main(file_scans, file_score, file_equipe):
         if (danger > SEUIL_DANGER_ARRET_COMPLET and flag_embase_en_mouvement):
             port_embase.write(WAIT)
             flag_embase_en_mouvement = False
-            #time.sleep(0.5) #timing
-        else:
-            pass
+      
 
         if (danger < SEUIL_DANGER_ARRET_COMPLET and not flag_embase_en_mouvement):
             port_embase.write(START)
