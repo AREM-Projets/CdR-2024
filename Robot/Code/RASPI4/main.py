@@ -23,8 +23,8 @@ DUREE_VIE_SCAN_LIDAR = 2 #duree de vie d'un scan lidar en secondes (au bout de c
 TIMEOUT_ROBOT = 1000 #s (16,6 min)
 
 #parametres LIDAR
-SEUIL_DETECTION = 350 #mm
-FOV = 90 #deg (champ de vision centré)
+SEUIL_DETECTION = 400 #mm
+FOV = 160 #deg (champ de vision centré)
 
 #parametres actionneur
 TEMPS_ACTION = 7 #s duree de l'action de l'actionneur (pousser un panneau solaire)
