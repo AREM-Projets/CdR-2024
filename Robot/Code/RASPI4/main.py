@@ -212,8 +212,8 @@ def main(file_scans, file_score, file_equipe):
             scan_angle = float(scan[1])
             scan_dist = float(scan[2])
 
-            delta_t_mes = scan_date - t_derniere_mesure
-            t_derniere_mesure = scan_date
+            delta_t_mes = time.monotonic() - t_derniere_mesure
+            t_derniere_mesure = time.monotonic()
 
             if (delta_t_mes > SEUIL_TEMPS_DETECTION_OBSTACLE):
                 danger = 0
