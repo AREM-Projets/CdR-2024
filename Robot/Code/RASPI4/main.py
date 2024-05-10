@@ -239,7 +239,7 @@ def main(file_scans, file_score, file_equipe):
 
 
         else:
-            #danger = 0
+            danger = 0
             pass
 
            
@@ -257,7 +257,6 @@ def main(file_scans, file_score, file_equipe):
         if (danger < SEUIL_DANGER_ARRET_COMPLET and not flag_embase_en_mouvement):
             port_embase.write(START)
             flag_embase_en_mouvement = True
-            danger = 0
 
         
 
