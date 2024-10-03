@@ -16,7 +16,7 @@ Avec COEF_EXTENSION_BRAS = 1.7 actionner prends 8s
 #include <VL53L1X.h>
 
 
-#define COEF_EXTENSION_BRAS 1.7 //1.7 permet une extension de 7cm environ avec une derive de 0.5mm vers l'arriere par extension complete
+#define COEF_EXTENSION_BRAS 1 //1.7 permet une extension de 7cm environ avec une derive de 0.5mm vers l'arriere par extension complete
 
 Servo servo;
 
@@ -54,18 +54,23 @@ void loop()
         servo.attach(D11); //demarrage du servomoteur
         //le pilotage du servo est cahotique mais la sequence ci dessous fonctionne bien
         //on deploie le bras
-        for (pos = 0; pos <= 100; pos += 1)
-        {
-          // Serial.println(pos); //du debug
-          servo.write(pos);
-          delay(19*COEF_EXTENSION_BRAS); //delay(19*COEF); //autre reglage plus efficace pour des COEFS proche de 1
-        }
-        //on retracte le bras
-        for (pos = 100; pos <= 200; pos += 1)
-        {                   
-          servo.write(pos);
-          delay(17*COEF_EXTENSION_BRAS); //delay(15*COEF); //autre reglage plus efficace pour des COEFS proche de 1
-        }
+
+        servo.writeMicroseconds(1400);
+        delay(1000);
+        servo.writeMicroseconds(1800);
+        delay(1000);
+        // for (pos = 0; pos <= 100; pos += 1)
+        // {
+        //   // Serial.println(pos); //du debug
+        //   servo.write(pos);
+        //   delay(19*COEF_EXTENSION_BRAS); //delay(19*COEF); //autre reglage plus efficace pour des COEFS proche de 1
+        // }
+        // //on retracte le bras
+        // for (pos = 100; pos <= 200; pos += 1)
+        // {                   
+        //   servo.write(pos);
+        //   delay(17*COEF_EXTENSION_BRAS); //delay(15*COEF); //autre reglage plus efficace pour des COEFS proche de 1
+        // }
 
         servo.detach(); //arret moteur
         digitalWrite(LED_BUILTIN, LOW);
